@@ -1,6 +1,5 @@
 <template>
   <TransitionGroup
-    appear
     name="cover"
     tag="div"
     @before-enter="beforeEnter"
@@ -13,7 +12,7 @@
       :key="index"
       :data-index="index"
     >
-      {{ box }}
+      <!-- {{ box }} -->
     </div>
   </TransitionGroup>
 </template>
@@ -33,36 +32,37 @@ export default {
       // console.log("leave is false from from");
       // el.style.transform = "translateY(0);";
       // If the user clicks on a nav link (leavetransition is true)
-      console.log("leave is true from from");
       el.style.transform = "translateY(100%);";
       // el.style.transform = "translateY(0);";
     };
     const enter = (el, done) => {
       // When the page is openned (leavetransition is undefined)
-      console.log("leave is false from to");
-      gsap.to(el, {
-        duration: 1.3,
-        onComplete: done,
-        yPercent: -230,
-        delay: el.dataset.index * 0.1,
-      });
+      // console.log("leave is false from to");
+      // gsap.to(el, {
+      //   duration: 1.3,
+      //   onComplete: done,
+      //   yPercent: -230,
+      //   delay: el.dataset.index * 0.1,
+      // });
       // If the user clicks on a nav link (leavetransition is true)
       //   console.log(el.classList.contains("box5"), "elem");
       if (el.classList.contains("box5")) {
         el.style.zindex = 30;
       }
-      console.log("leave is true from to");
-      gsap.to(el, {
-        duration: 0.5,
-        onComplete: done,
+      const tl = gsap.timeline();
+      // gsap.to(el, {
+      tl.to("div>.pg-box.leave", {
+        duration: 0.2,
+        // onComplete: done,
         yPercent: -100,
-        delay: el.dataset.index * 0.1,
+        // delay: el.dataset.index * 0.1,
+        stagger: 0.1,
       });
+      tl.to({}, { onComplete: done, duration: 0.5 });
     };
     const afterEnter = (el) => {
       // Remove the element from the DOM after the leave transition
       el.remove();
-      console.log("weee");
     };
 
     // console.log(props.leaveTransition, "leave");
@@ -95,13 +95,13 @@ export default {
 .box1 {
   background-color: red;
   color: white;
-  z-index: 20;
+  z-index: 16;
 }
 
 .box2 {
   background-color: green;
   color: white;
-  z-index: 19;
+  z-index: 17;
 }
 
 .box3 {
@@ -113,12 +113,12 @@ export default {
 .box4 {
   background-color: yellow;
   color: white;
-  z-index: 17;
+  z-index: 19;
 }
 .box5 {
   background-color: red;
   color: white;
-  z-index: 16;
+  z-index: 20;
 }
 
 /* cover transitions */

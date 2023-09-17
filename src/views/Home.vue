@@ -10,8 +10,7 @@
       velit iusto iste, debitis id quasi nisi provident asperiores perferendis
       maxime, est voluptates? Pariatur, minima.
     </p>
-    <PageCover v-if="showSlides"></PageCover>
-    <button @click="showSlides = !showSlides">Toggle</button>
+    <PageCover></PageCover>
   </div>
 </template>
 

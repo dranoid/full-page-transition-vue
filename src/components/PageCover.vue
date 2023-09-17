@@ -9,11 +9,11 @@
   >
     <div
       v-for="(box, index) in boxes"
-      :class="[`box${box}`, 'pg-box']"
+      :class="[`box${box}`, 'pg-box', 'no-leave']"
       :key="index"
       :data-index="index"
     >
-      {{ box }}
+      <!-- {{ box }} -->
     </div>
   </TransitionGroup>
 </template>
@@ -28,65 +28,32 @@ export default {
   setup(props) {
     const boxes = ref([1, 2, 3, 4, 5]);
 
-    const beforeEnter = (el) => {
-      // // When the page is openned (leavetransition is undefined)
-      // console.log("leave is false from from");
-      // el.style.transform = "translateY(0);";
-      // If the user clicks on a nav link (leavetransition is true)
-      console.log("leave is true from from");
-      el.style.transform = "translateY(100%);";
-      // el.style.transform = "translateY(0);";
-    };
-    const enter = (el, done) => {
-      // When the page is openned (leavetransition is undefined)
-      // console.log("leave is false from to");
-      // gsap.to(el, {
-      //   duration: 1.3,
-      //   onComplete: done,
-      //   yPercent: -230,
-      //   delay: el.dataset.index * 0.1,
-      // });
-      // If the user clicks on a nav link (leavetransition is true)
-      console.log("leave is true from to");
-      gsap.to(el, {
-        duration: 0.5,
-        onComplete: done,
-        yPercent: -100,
-        delay: el.dataset.index * 0.1,
-      });
-    };
-    const afterEnter = (el) => {
-      // Remove the element from the DOM after the leave transition
-      el.remove();
-      console.log("weee");
-    };
-
     const beforeEnterNoLeave = (el) => {
       // When the page is openned (leavetransition is undefined)
-      console.log("leave is false from from");
       el.style.transform = "translateY(0);";
       // If the user clicks on a nav link (leavetransition is true)
       // console.log("leave is true from from");
       // el.style.transform = "translateY(100%);";
       // el.style.transform = "translateY(0);";
+      gsap.set(el, {
+        yPercent: 0,
+      });
     };
     const enterNoLeave = (el, done) => {
       // When the page is openned (leavetransition is undefined)
-      console.log("leave is false from to");
-      gsap.to(el, {
-        duration: 1.3,
+      gsap.to("div>.pg-box.no-leave", {
+        duration: 1,
         onComplete: done,
         yPercent: -230,
-        delay: el.dataset.index * 0.1,
+        ease: "power4.in",
+        // delay: el.dataset.index * 0.1,
+        stagger: 0.1,
       });
     };
     const afterEnterNoLeave = (el) => {
       // Remove the element from the DOM after the leave transition
       el.remove();
-      console.log("weee");
     };
-
-    console.log(props.leaveTransition, "leave");
 
     return {
       boxes,
@@ -111,6 +78,7 @@ export default {
   align-items: center;
   font-size: 4em;
   font-weight: bold;
+  transform: translateY(0);
 }
 
 .box1 {

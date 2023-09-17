@@ -1,9 +1,7 @@
 <template>
-  <button @click="showW = !showW">Toggle</button>
-
   <nav>
-    <router-link to="/">Home</router-link>
-    <router-link @click="showW = !showW" to="/about">About</router-link>
+    <router-link @click="triggerLeaveTransition" to="/">Home</router-link>
+    <router-link @click="triggerLeaveTransition" to="/about">About</router-link>
   </nav>
   <div>
     <router-view v-slot="{ Component }">
@@ -16,7 +14,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onUpdated } from "vue";
 import PageLeave from "./components/PageLeave.vue";
 export default {
   components: {
@@ -25,7 +23,18 @@ export default {
   setup() {
     const showW = ref(false);
 
-    return { showW };
+    function triggerLeaveTransition() {
+      console.log(showW.value, "update before");
+      showW.value = !showW.value;
+      // showW.value = true;
+      console.log(showW.value, "update");
+    }
+    onUpdated(() => {
+      // showW.value = false;
+      console.log(" IYA YINNN!!", showW.value);
+    });
+
+    return { showW, triggerLeaveTransition };
   },
 };
 </script>
@@ -46,6 +55,6 @@ export default {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: all 0.8s ease;
+  transition: all 0.2s ease;
 }
 </style>

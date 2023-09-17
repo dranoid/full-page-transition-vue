@@ -9,8 +9,7 @@
       Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugit
       reprehenderit eveniet laudantium placeat id magni.
     </p>
-    <PageCover v-if="showSlides"></PageCover>
-    <button @click="showSlides = !showSlides">Toggle</button>
+    <PageCover></PageCover>
   </div>
 </template>
 
