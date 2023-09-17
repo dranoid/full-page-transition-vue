@@ -1,5 +1,6 @@
 <template>
   <TransitionGroup
+    appear
     name="cover"
     tag="div"
     @before-enter="beforeEnter"
