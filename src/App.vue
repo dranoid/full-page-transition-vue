@@ -32,14 +32,19 @@ export default {
     onUpdated(() => {
       // showW.value = false;
       console.log(" IYA YINNN!!", showW.value);
+      // While showW.value would change to false, for some reason after this, the transition doesnt play anymore when triggerLeaveTransition() changes it to true
     });
 
     return { showW, triggerLeaveTransition };
   },
+
+  // The showW variable is to trigger the leave animation but since it can be toggled by both links and resetting it to false on every change (onUpdated) is not working, the behaviour is now the transition on triggers on every odd click
 };
 </script>
 
 <style>
+/* I'm wondering if the opacity transition set for the router affects the entire setup  */
+
 .fade-enter-from {
   opacity: 0;
 }

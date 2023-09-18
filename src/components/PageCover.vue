@@ -13,6 +13,7 @@
       :key="index"
       :data-index="index"
     >
+      <!-- For better visualization of the transitions you can uncomment the box below -->
       <!-- {{ box }} -->
     </div>
   </TransitionGroup>
@@ -22,31 +23,25 @@
 import { ref } from "vue";
 import gsap from "gsap";
 export default {
-  props: {
-    leaveTransition: Boolean,
-  },
+  // pageCover is the second half of the transition, whenever a page is reloaded it plays. The plan was that the first half of the transition ends on a red box and the second half starts from a red box giving it a 'seamless' feel but because of time syncing issues the first half is still a bit choppy
+
   setup(props) {
     const boxes = ref([1, 2, 3, 4, 5]);
 
     const beforeEnterNoLeave = (el) => {
-      // When the page is openned (leavetransition is undefined)
+      // Makes the transition start from covering the whole page
       el.style.transform = "translateY(0);";
-      // If the user clicks on a nav link (leavetransition is true)
-      // console.log("leave is true from from");
-      // el.style.transform = "translateY(100%);";
-      // el.style.transform = "translateY(0);";
       gsap.set(el, {
         yPercent: 0,
       });
     };
     const enterNoLeave = (el, done) => {
-      // When the page is openned (leavetransition is undefined)
+      // The staggered boxes transition
       gsap.to("div>.pg-box.no-leave", {
         duration: 1,
         onComplete: done,
         yPercent: -230,
         ease: "power4.in",
-        // delay: el.dataset.index * 0.1,
         stagger: 0.1,
       });
     };
@@ -60,7 +55,6 @@ export default {
       enterNoLeave,
       beforeEnterNoLeave,
       afterEnterNoLeave,
-      //  shouldTransition
     };
   },
 };
@@ -109,12 +103,4 @@ export default {
   color: white;
   z-index: 16;
 }
-
-/* cover transitions */
-/* .cover-enter-from {
-  transform: translateY(100%);
-}
-.cover-enter-active {
-  transition: transform 0.5s ease-in-out;
-} */
 </style>

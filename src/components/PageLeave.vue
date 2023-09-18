@@ -13,6 +13,7 @@
       :key="index"
       :data-index="index"
     >
+      <!-- For better visualization of the transitions you can uncomment the box below -->
       <!-- {{ box }} -->
     </div>
   </TransitionGroup>
@@ -22,51 +23,35 @@
 import { ref } from "vue";
 import gsap from "gsap";
 export default {
-  props: {
-    // leaveTransition: Boolean,
-  },
+  // PageLeave is a transition triggered when the user clicks on a navigation link (currently, it triggers even if you are still on the same page). It is the first half of the transition we are trying to achieve
+
   setup(props) {
     const boxes = ref([1, 2, 3, 4, 5]);
 
     const beforeEnter = (el) => {
-      // // When the page is openned (leavetransition is undefined)
-      // console.log("leave is false from from");
-      // el.style.transform = "translateY(0);";
-      // If the user clicks on a nav link (leavetransition is true)
+      // This starts the transition with the boxes below the page
       el.style.transform = "translateY(100%);";
-      // el.style.transform = "translateY(0);";
     };
     const enter = (el, done) => {
-      // When the page is openned (leavetransition is undefined)
-      // console.log("leave is false from to");
-      // gsap.to(el, {
-      //   duration: 1.3,
-      //   onComplete: done,
-      //   yPercent: -230,
-      //   delay: el.dataset.index * 0.1,
-      // });
-      // If the user clicks on a nav link (leavetransition is true)
-      //   console.log(el.classList.contains("box5"), "elem");
-      if (el.classList.contains("box5")) {
-        el.style.zindex = 30;
-      }
+      // A gsap timeline is created, for better sequencing.
       const tl = gsap.timeline();
+
       // gsap.to(el, {
+      // Css selectors for the boxes on this page
       tl.to("div>.pg-box.leave", {
         duration: 0.2,
-        // onComplete: done,
         yPercent: -100,
-        // delay: el.dataset.index * 0.1,
         stagger: 0.1,
       });
+
+      // Allows the boxes to stay on screen for an extra 0.5 seconds before the onComplete -> afterEnter() is triggered and the element is removed
+      // The duration issues is what's responsible for the chopiness at the start of the transition between pages. Notice that the beginning seems rushed while the ending is smooth
       tl.to({}, { onComplete: done, duration: 0.5 });
     };
     const afterEnter = (el) => {
       // Remove the element from the DOM after the leave transition
       el.remove();
     };
-
-    // console.log(props.leaveTransition, "leave");
 
     return {
       boxes,
@@ -121,12 +106,4 @@ export default {
   color: white;
   z-index: 20;
 }
-
-/* cover transitions */
-/* .cover-enter-from {
-  transform: translateY(100%);
-}
-.cover-enter-active {
-  transition: transform 0.5s ease-in-out;
-} */
 </style>
